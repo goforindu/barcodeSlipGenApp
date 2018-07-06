@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Barcode slip generator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/barcodes/JsBarcode.code128.min.js"></script>
+<style>
+body {
+  background: rgb(204,204,204);
+}
+page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+page[size="A4"] {
+  width: 21cm;
+  height: 29.7cm;
+}
+page[size="A4"][layout="portrait"] {
+  width: 29.7cm;
+  height: 21cm;
+}
+td{
+  width:52.5mm;
+  height:29mm;
+}
+
+@media print {
+  body, page {
+    margin: 0;
+    box-shadow: 0;
+  }
+  .no-print{
+  display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+<!--Barcode slip generating App created-->
+<!--main div start--->
+<div ng-app="barcodeSlipApp" ng-controller="barcodeCtrl">
+<!--no print is a class used for hiding form while printing-->
+<div class="container no-print">
+  <h2>Generate Barcode Slip</h2>
+  <!--form start used bootstrap to create form-->
+  <form name="productForm">
+    <div class="form-group">
+      <label for="product">Product ID:</label>
+      <input type="text" name="product" class="form-control" id="product" ng-model="product_id" ng-minlength="6" ng-maxlength="10" ng-pattern="/^\w+$/" required>
+       <div ng-messages="productForm.product.$error">
+       <p ng-message="required">Providing a Product ID is mandatory.</p>
+       <p ng-message="pattern">Product ID  can only be alphanumeric with an optional underscore.</p>
+      <p ng-message="minlength">Product ID should have at least 6 characters.</p>
+      <p ng-message="maxlength">Product ID should have at most 10 characters.</p>
+
+    </div>
+    </div>
+    <div class="form-group">
+      <label for="mrp">MRP:</label>
+      <input type="text" class="form-control" name="mrp" id="mrp" ng-model="mrp" ng-pattern="/^[0-9]*$/" required>
+       <div ng-messages="productForm.mrp.$error">
+       <p ng-message="required">Providing a M.R.P. is mandatory.</p>
+       <p ng-message="pattern">Please enter valid price</p>
+ 	 </div>
+    </div>
+    <div class="form-group">
+      <label for="size">Dimension:</label>
+      <input type="text" class="form-control" id="size" ng-model="size">
+    </div>
+    <div class="form-group">
+      <label for="weight">Weight:</label>
+      <input type="text" class="form-control" name="weight" id="weight" ng-model="weight" ng-pattern="/^[0-9]*$/">
+       <div ng-messages="productForm.weight.$error">
+       <p ng-message="pattern">Weight should be in numbers</p>
+    </div>
+    </div>
+    <br>
+    <button type="button" ng-click="generateBarcode()" class="btn btn-primary">Display Barcode</button>
+    <button type="button" ng-click="printBarcode()" class="btn btn-primary">Print Page</button>
+  </form>
+  <!--form end-->
+</div>
+<br>
+<!--page on which slips display-->
+<page id="printpage" size="A4">
+
+  <table>
+  <tr ng-repeat="n in [] | range:10">
+    <td ng-repeat="m in [] | range:4"> <img id="barcode"/><p ng-show="IsVisible" style="font-size:10px; margin-top:-5px;margin-left:12px ;"><b><span>MRP <span>&#8377;</span></span>{{ mrp}}</b> {{"  | Size"+ size +" | Wt."+weight+"gm" }}</p></td>
+</tr>
+</table>
+
+
+</page>
+<!--page end-->
+
+
+</div>
+<!--main div end haiving app decleration-->
+
+<script>
+//angular.module('app', ['ngMessages']);
+var app = angular.module('barcodeSlipApp', ['ngMessages']);
+app.filter('range', function() {
+  return function(input, total) {
+    total = parseInt(total);
+    for (var i=0; i<total; i++)
+      input.push(i);
+    return input;
+  };
+});
+app.controller('barcodeCtrl', function($scope) {
+$scope.text="";
+ $scope.IsVisible = false;
+    $scope.generateBarcode = function() {
+     $scope.IsVisible = true;
+        return JsBarcode("#barcode", $scope.product_id,{
+  width:1.2,
+  height:20,
+  fontSize:12
+});
+
+    },
+   $scope.printBarcode=function(){
+   window.print();
+   } ;
+});
+
+
+</script>
+
+
+</body>
+</html>
