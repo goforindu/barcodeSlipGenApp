@@ -15,7 +15,9 @@ $scope.text="";
         return JsBarcode("#barcode", $scope.product_id,{
   width:1.2,
   height:20,
-  fontSize:12
+  fontSize:12,
+  marginTop:0,
+  marginLeft:0
 });
 
     },
