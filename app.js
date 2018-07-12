@@ -16,7 +16,8 @@ $scope.text="";
   width:1.2,
   height:20,
   fontSize:12,
-  marginTop:0,
+  textMargin:1.2,
+  marginTop:-1,
   marginLeft:0
 });
 

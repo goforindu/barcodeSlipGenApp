@@ -32,7 +32,7 @@ page[size="A4"][layout="portrait"] {
 }
 td{
   width:52.5mm;
-  height:29.7mm;
+  height:29mm;
 }
 
 @media print {
@@ -58,7 +58,7 @@ td{
   <form name="productForm">
     <div class="form-group">
       <label for="product">Product ID:</label>
-      <input type="text" name="product" class="form-control" id="product" ng-model="product_id" ng-minlength="6" ng-maxlength="10" ng-pattern="/^\w+$/" required>
+      <input type="text" name="product" placeholder="cosmorug34" class="form-control" id="product" ng-model="product_id" ng-minlength="6" ng-maxlength="10" ng-pattern="/^\w+$/" required>
        <div ng-messages="productForm.product.$error" ng-if="productForm.product.$touched || productForm.product.$dirty">
        <p ng-message="required" class="text-danger">Please enter product id</p>
        <p ng-message="pattern" class="text-danger">Product ID  can only be alphanumeric with an optional underscore.</p>
@@ -69,7 +69,7 @@ td{
     </div>
     <div class="form-group">
       <label for="productName">Product Name:</label>
-      <input type="text" name="productName" class="form-control" id="productName" ng-model="productName"  ng-pattern="/^\w+$/" required>
+      <input type="text" name="productName" placeholder="YOGAMAT" class="form-control" id="productName" ng-model="productName"  ng-pattern="/^\w+$/" required>
        <div ng-messages="productForm.productName.$error" ng-if="productForm.productName.$touched || productForm.productName.$dirty">
        <p ng-message="required" class="text-danger">Please enter product name</p>
        <p ng-message="pattern" class="text-danger">Product Name  can only be alphanumeric with an optional underscore.</p>
@@ -78,28 +78,39 @@ td{
     </div>
     <div class="form-group">
       <label for="mrp">MRP:</label>
-      <input type="text" class="form-control" name="mrp" id="mrp" ng-model="mrp" ng-pattern="/^[0-9]*$/" required>
+      <input type="text" placeholder="699" class="form-control" name="mrp" id="mrp" ng-model="mrp" ng-pattern="/^[0-9]*$/" required>
        <div ng-messages="productForm.mrp.$error" ng-if="productForm.mrp.$touched || productForm.mrp.$dirty">
        <p ng-message="required" class="text-danger">Please enter product price</p>
        <p ng-message="pattern" class="text-danger">Please enter valid price</p>
  	 </div>
     </div>
-    <div class="form-group">
+    <div class="row">
+    <div class="form-group col-sm-8">
       <label for="size">Dimension:</label>
-      <input type="text" class="form-control" name="size"id="size" ng-model="size" required>
+      <input type="text" placeholder="240X240" class="form-control" name="size"id="size" ng-model="size" required>
       <div ng-messages="productForm.size.$error" ng-if="productForm.size.$touched || productForm.size.$dirty">
          <p ng-message="required" class="text-danger">Please enter product Size</p>
       <p ng-message="pattern" class="text-danger">Weight should be in numbers</p>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-4">
+  <label for="size_unit">Select Unit:</label>
+  <select class="form-control" id="size_unit" ng-model="selectedUnit" >
+    <option>Centimetre</option>
+    <option>Metre</option>
+    <option>Inche</option>
+    <option>Foot</option>
+  </select>
+</div>
+</div>
+    <!--<div class="form-group">
       <label for="weight">Weight:</label>
-      <input type="text" class="form-control" name="weight" id="weight" ng-model="weight" ng-pattern="/^[0-9]*$/" required>
+      <input type="text" placeholder="400" class="form-control" name="weight" id="weight" ng-model="weight" ng-pattern="/^[0-9]*$/" required>
        <div ng-messages="productForm.weight.$error" ng-if="productForm.weight.$touched || productForm.weight.$dirty">
           <p ng-message="required" class="text-danger">Please enter product weight</p>
        <p ng-message="pattern" class="text-danger">Weight should be in numbers</p>
     </div>
-    </div>
+  </div>-->
     <br>
     <button type="button" ng-click="generateBarcode()" ng-disabled="productForm.$invalid" class="btn btn-primary">Display Barcode</button>
     <button type="button" ng-click="printBarcode()" ng-disabled="productForm.$invalid" class="btn btn-primary">Print Page</button>
@@ -112,7 +123,7 @@ td{
 
   <table>
   <tr ng-repeat="n in [] | range:10">
-    <td ng-repeat="m in [] | range:4"> <img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;"><span>{{"Product Name "+productName}}</span><br/><b><span>MRP <span>&#8377;</span></span>{{ mrp}}</b> {{"  | Size "+ size +" | WT."+weight+"gm" }}</p></td>
+    <td ng-repeat="m in [] | range:4"> <span ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><b>{{"PRODUCT NAME : "+productName}}</b></span><img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><span>SIZE {{"("+selectedUnit+")"}}:{{size }}</span><br/><b><span>MRP : <span>&#8377;</span></span>{{ mrp + "/- (Inclusive of all taxes)"}}</b></p></td>
 </tr>
 </table>
 
