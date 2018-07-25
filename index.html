@@ -9,6 +9,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+<script type="text/javascript" src='https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js'></script>
 <script src="app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/barcodes/JsBarcode.code128.min.js"></script>
 <style>
@@ -44,19 +45,27 @@ td{
   display:none;
   }
 }
+
+.showTd{
+  display:none;
+}
+
 </style>
 </head>
 
 <body>
+
 <!--Barcode slip generating App created-->
 <!--main div start--->
+
 <div ng-app="barcodeSlipApp" ng-controller="barcodeCtrl">
 <!--no print is a class used for hiding form while printing-->
 <div class="container no-print">
   <h2>Generate Barcode Slip</h2>
   <!--form start used bootstrap to create form-->
   <form name="productForm">
-    <div class="form-group">
+    <div class="row">
+    <div class="form-group col-sm-8">
       <label for="product">Product ID:</label>
       <input type="text" name="product" placeholder="cosmorug34" class="form-control" id="product" ng-model="product_id" ng-minlength="6" ng-maxlength="10" ng-pattern="/^\w+$/" required>
        <div ng-messages="productForm.product.$error" ng-if="productForm.product.$touched || productForm.product.$dirty">
@@ -64,9 +73,13 @@ td{
        <p ng-message="pattern" class="text-danger">Product ID  can only be alphanumeric with an optional underscore.</p>
       <p ng-message="minlength" class="text-danger">Product ID should have at least 6 characters.</p>
       <p ng-message="maxlength" class="text-danger">Product ID should have at most 10 characters.</p>
-
     </div>
     </div>
+    <div class="form-group col-sm-4">
+      <label for="rows_count">No. of Rows:</label>
+      <input type="text" placeholder="10" class="form-control" name="rows_count" id="rows_count" ng-model="rows_count" ng-pattern="/^[0-9]*$/" required>
+    </div>
+  </div>
     <div class="form-group">
       <label for="productName">Product Name:</label>
       <input type="text" name="productName" placeholder="YOGAMAT" class="form-control" id="productName" ng-model="productName"  ng-pattern="/^\w+$/" required>
@@ -96,10 +109,10 @@ td{
     <div class="form-group col-sm-4">
   <label for="size_unit">Select Unit:</label>
   <select class="form-control" id="size_unit" ng-model="selectedUnit" >
-    <option>Centimetre</option>
+    <option>cm</option>
     <option>Metre</option>
     <option>Inche</option>
-    <option>Foot</option>
+    <option>Feet</option>
   </select>
 </div>
 </div>
@@ -120,16 +133,16 @@ td{
 <br>
 <!--page on which slips display-->
 <page id="printpage" size="A4">
-
   <table>
-  <tr ng-repeat="n in [] | range:10">
-    <td ng-repeat="m in [] | range:4"> <span ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><b>{{"PRODUCT NAME : "+productName}}</b></span><img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><span>SIZE {{"("+selectedUnit+")"}}:{{size }}</span><br/><b><span>MRP : <span>&#8377;</span></span>{{ mrp + "/- (Inclusive of all taxes)"}}</b></p></td>
+  <tr ng-repeat="n in [] | limitRow:sticker_count" style="visibility:hidden">
+    <td  ng-repeat="m in [] | limitTd:sticker_count"> <span ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><b>{{"PRODUCT NAME : "+productName}}</b></span><img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;margin-left:10px;"><span>SIZE {{"("+selectedUnit+")"}}:{{size }}</span><br/><b><span>MRP : <span>&#8377;</span></span>{{ mrp + "/- (Inclusive of all taxes)"}}</b></p></td>
 </tr>
 </table>
 
 
 </page>
 <!--page end-->
+
 
 
 </div>
