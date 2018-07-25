@@ -50,15 +50,68 @@ td{
   display:none;
 }
 
+/* Center the loader */
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-right: 16px solid green;
+  border-bottom: 16px solid red;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+
+}
 </style>
 </head>
 
-<body>
-
+<body onload="myFunction()">
+<div id="loader"></div>
 <!--Barcode slip generating App created-->
 <!--main div start--->
 
-<div ng-app="barcodeSlipApp" ng-controller="barcodeCtrl">
+<div ng-app="barcodeSlipApp" ng-controller="barcodeCtrl" style="display:none;" id="myDiv" class="animate-bottom">
 <!--no print is a class used for hiding form while printing-->
 <div class="container no-print">
   <h2>Generate Barcode Slip</h2>
@@ -77,7 +130,7 @@ td{
     </div>
     <div class="form-group col-sm-4">
       <label for="rows_count">No. of Rows:</label>
-      <input type="text" placeholder="10" class="form-control" name="rows_count" id="rows_count" ng-model="rows_count" ng-pattern="/^[0-9]*$/" required>
+      <input type="number" placeholder="10" class="form-control" name="rows_count" id="rows_count" ng-model="rows_count" ng-pattern="/^[0-9]*$/" required>
     </div>
   </div>
     <div class="form-group">
@@ -152,4 +205,18 @@ td{
 
 
 </body>
+<script>
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+
 </html>
