@@ -149,7 +149,11 @@ td{
        <p ng-message="required" class="text-danger">Please enter product price</p>
        <p ng-message="pattern" class="text-danger">Please enter valid price</p>
  	 </div>
+<<<<<<< HEAD
  </div>-->
+=======
+    </div>-->
+>>>>>>> 24dcdef41f80dff3707be289840e4bd3d6f158ef
     <div class="row">
     <div class="form-group col-sm-8">
       <label for="size">Dimension:</label>
@@ -188,7 +192,7 @@ td{
 <page id="printpage" size="A4">
   <table>
   <tr ng-repeat="n in [] | limitRow:sticker_count" style="visibility:hidden">
-    <td  ng-repeat="m in [] | limitTd:sticker_count"> <div ng-show="IsVisible" style="font-size:10px;margin-left:14px;margin-top:-10px;"><b>{{"PRODUCT NAME : "+productName}}</b></div><img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;margin-left:10px;margin-top:-5px"><span>SIZE {{"("+selectedUnit+")"}}:{{size }}</span><br/><b><span>MRP : <span>&#8377;</span></span>{{ mrp + "/- (Inclusive of all taxes)"}}</b></p></td>
+    <td  ng-repeat="m in [] | limitTd:sticker_count"> <div ng-show="IsVisible" style="font-size:10px;margin-left:14px;margin-top:-10px;"><b>{{"PRODUCT NAME : "+productName}}</b></div><img id="barcode"/><p ng-show="IsVisible" style="font-size:10px;margin-left:10px;margin-top:-5px"><span>SIZE {{"("+selectedUnit+")"}}:{{size }}</span><br/><!--<b><span>MRP : <span>&#8377;</span></span>{{ mrp + "/- (Inclusive of all taxes)"}}</b>--></p></td>
 </tr>
 </table>
 
